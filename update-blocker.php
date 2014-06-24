@@ -33,7 +33,7 @@ global $update_blocker;
 $update_blocker = new Plugin( array(
 	'all'     => false,
 	'files'   => array( '.git', '.svn', '.hg' ),
-	'plugins' => array(),
+	'plugins' => array( 'update-blocker/update-blocker.php' ),
 	'themes'  => array(),
 ) );
 
