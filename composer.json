@@ -1,0 +1,21 @@
+{
+	"name"       : "rarst/update-blocker",
+	"description": "",
+	"keywords"   : ["wordpress"],
+	"type"       : "wordpress-plugin",
+	"homepage"   : "https://github.com/Rarst/update-blocker",
+	"license"    : "MIT",
+	"authors"    : [
+		{
+			"name"    : "Andrey Savchenko",
+			"email"   : "contact@rarst.net",
+			"homepage": "http://www.Rarst.net/"
+		}
+	],
+	"support"    : {
+		"issues": "https://github.com/Rarst/update-blocker/issues"
+	},
+	"require"    : {
+		"composer/installers": "~1.0"
+	}
+}
