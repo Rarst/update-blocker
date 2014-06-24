@@ -157,7 +157,7 @@ class Plugin {
 		foreach ( $data['plugins'] as $file => $plugin ) {
 			$path = trailingslashit( WP_PLUGIN_DIR . '/' . dirname( $file ) ); // TODO files without dir?
 
-			if ( in_array( $file, $this->blocked->files ) || $this->has_blocked_file( $path ) ) {
+			if ( in_array( $file, $this->blocked->plugins ) || $this->has_blocked_file( $path ) ) {
 				unset( $data['plugins'][$file] );
 				unset( $data['active'][array_search( $file, $data['active'] )] );
 			}
