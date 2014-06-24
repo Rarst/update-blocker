@@ -169,7 +169,7 @@ class Plugin {
 	/**
 	 * @param array $data
 	 *
-	 * @return array mixed
+	 * @return array
 	 */
 	public function filter_themes( $data ) {
 
