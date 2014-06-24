@@ -31,6 +31,7 @@ namespace Rarst\Update_Blocker;
 global $update_blocker;
 
 $update_blocker = new Plugin( array(
+	'all'     => false,
 	'files'   => array( '.git', '.svn', '.hg' ),
 	'plugins' => array(),
 	'themes'  => array(),
@@ -51,9 +52,27 @@ class Plugin {
 	 * @param array $settings
 	 */
 	public function __construct( $settings = array() ) {
-		$defaults      = array_fill_keys( array( 'files', 'plugins', 'themes' ), array() );
+		$defaults      = array( 'all' => false ) + array_fill_keys( array( 'files', 'plugins', 'themes' ), array() );
 		$this->blocked = (object) apply_filters( 'update_blocker_blocked', array_merge( $defaults, $settings ) );
-		add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
+
+		if ( $this->blocked->all ) {
+			add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
+		} else {
+			add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * @param boolean $false
+	 * @param array   $request_args
+	 * @param string  $url
+	 *
+	 * @return boolean|null
+	 */
+	public function pre_http_request( $false, $request_args, $url ) {
+		$api = $this->get_api( $url );
+
+		return empty( $api ) ? $false : null;
 	}
 
 	/**
