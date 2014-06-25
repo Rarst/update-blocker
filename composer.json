@@ -1,6 +1,6 @@
 {
 	"name"       : "rarst/update-blocker",
-	"description": "",
+	"description": "Lightweight generic blocker of updates from official WordPress repositories",
 	"keywords"   : ["wordpress"],
 	"type"       : "wordpress-plugin",
 	"homepage"   : "https://github.com/Rarst/update-blocker",

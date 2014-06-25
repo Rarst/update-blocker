@@ -2,7 +2,7 @@
 /*
 Plugin Name: Update Blocker
 Plugin URI: https://github.com/Rarst/update-blocker
-Description: 
+Description: Lightweight generic blocker of updates from official WordPress repositories
 Author: Andrey "Rarst" Savchenko
 Author URI: http://www.rarst.net/
 License: MIT
