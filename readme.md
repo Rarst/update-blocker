@@ -1,6 +1,6 @@
 # Update Blocker — for WP repositories
 
-Update Blocker is a lightweight generic blocker of updates from official WordPress repositories.
+Update Blocker is a lightweight generic blocker of plugin and theme updates from official WordPress repositories.
 
 It was created as shared reusable plugin for the sake of no longer reinventing that particular wheel.
 
