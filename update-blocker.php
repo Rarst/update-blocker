@@ -52,6 +52,9 @@ class Plugin {
 	 * @param array $settings
 	 */
 	public function __construct( $settings = array() ) {
+		register_activation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
+
 		$defaults      = array( 'all' => false ) + array_fill_keys( array( 'files', 'plugins', 'themes' ), array() );
 		$this->blocked = (object) apply_filters( 'update_blocker_blocked', array_merge( $defaults, $settings ) );
 
@@ -60,6 +63,11 @@ class Plugin {
 		} else {
 			add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
 		}
+	}
+
+	public function delete_update_transients() {
+		delete_site_transient( 'update_plugins' );
+		delete_site_transient( 'update_themes' );
 	}
 
 	/**
