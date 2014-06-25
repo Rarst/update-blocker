@@ -56,7 +56,7 @@ class Plugin {
 		register_deactivation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
 
 		$defaults      = array( 'all' => false ) + array_fill_keys( array( 'files', 'plugins', 'themes' ), array() );
-		$this->blocked = (object) apply_filters( 'update_blocker_blocked', array_merge( $defaults, $blocked ) );
+		$this->blocked = array_merge( $defaults, $blocked );
 
 		if ( $this->blocked->all ) {
 			add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
@@ -95,6 +95,10 @@ class Plugin {
 
 		if ( empty( $this->api ) ) {
 			return $request_args;
+		}
+
+		if ( is_array( $this->blocked ) ) {
+			$this->blocked = (object) apply_filters( 'update_blocker_blocked', $this->blocked );
 		}
 
 		$data = $this->decode( $request_args['body'][$this->api->type] );
