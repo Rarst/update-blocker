@@ -62,9 +62,7 @@ class Plugin {
 	}
 
 	public function init() {
-		if ( is_array( $this->blocked ) ) {
-			$this->blocked = (object) apply_filters( 'update_blocker_blocked', $this->blocked );
-		}
+		$this->blocked = (object) apply_filters( 'update_blocker_blocked', $this->blocked );
 
 		if ( $this->blocked->all ) {
 			add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
