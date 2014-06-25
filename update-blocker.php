@@ -42,21 +42,21 @@ $update_blocker = new Plugin( array(
  */
 class Plugin {
 
-	/** @var object $settings */
+	/** @var object $blocked */
 	public $blocked;
 
 	/** @var object|boolean $api */
 	public $api;
 
 	/**
-	 * @param array $settings
+	 * @param array $blocked
 	 */
-	public function __construct( $settings = array() ) {
+	public function __construct( $blocked = array() ) {
 		register_activation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
 
 		$defaults      = array( 'all' => false ) + array_fill_keys( array( 'files', 'plugins', 'themes' ), array() );
-		$this->blocked = (object) apply_filters( 'update_blocker_blocked', array_merge( $defaults, $settings ) );
+		$this->blocked = (object) apply_filters( 'update_blocker_blocked', array_merge( $defaults, $blocked ) );
 
 		if ( $this->blocked->all ) {
 			add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
