@@ -76,7 +76,7 @@ array(
  - `plugins` — array of plugin base names (`folder-name/plugin-name.php`) to block
  - `themes` — array of theme slugs (`theme-name`) to block
 
-Settings pass through `update_blocker_blocked` filter on load.
+Settings pass through `update_blocker_blocked` filter.
 
 Processed data passes through `update_blocker_plugins` and `update_blocker_themes` filters during update checks.
 
