@@ -21,7 +21,7 @@ It was created as shared reusable plugin for the sake of no longer reinventing t
 
 ### Plugin
 
-1. [Download ZIP](https://github.com/Rarst/update-blocker/archive/master.zip)
+1. [Download ZIP](https://github.com/Rarst/update-blocker/archive/master.zip).
 2. Unpack files from inside into `wp-content/plugins/update-blocker`.
 
 ### MU-plugin
@@ -60,7 +60,7 @@ Requiring on plugin/theme level is not implemented, use `suggest`:
 
 ## Configuration
 
-Plugins settings have following structure:
+Plugin's settings have following structure:
 
 ```php
 array(
