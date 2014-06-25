@@ -89,7 +89,7 @@ add_filter( 'update_blocker_blocked', function( $blocked ) {
 } );
 ```
 
-### Theme opt-in
+### Theme opt–in
 
 ```php
 add_filter( 'update_blocker_blocked', function( $blocked ) {
