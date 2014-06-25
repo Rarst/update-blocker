@@ -83,19 +83,19 @@ Processed data passes through `update_blocker_plugins` and `update_blocker_theme
 ### Plugin opt–in
 
 ```php
-	add_filter( 'update_blocker_blocked', function( $blocked ) {
-		$blocked['plugins'][] = plugin_basename( __FILE__ ); // or just folder-name/plugin-name.php string
-		return $blocked;
-	} );
+add_filter( 'update_blocker_blocked', function( $blocked ) {
+	$blocked['plugins'][] = plugin_basename( __FILE__ ); // or just folder-name/plugin-name.php string
+	return $blocked;
+} );
 ```
 
 ### Theme opt-in
 
 ```php
-	add_filter( 'update_blocker_blocked', function( $blocked ) {
-		$blocked['themes'][] = 'theme-name';
-		return $blocked;
-	} );
+add_filter( 'update_blocker_blocked', function( $blocked ) {
+	$blocked['themes'][] = 'theme-name';
+	return $blocked;
+} );
 ```
 
 ## License
