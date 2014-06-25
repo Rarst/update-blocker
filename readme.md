@@ -27,7 +27,7 @@ It was created as shared reusable plugin for the sake of no longer reinventing t
 ### MU-plugin
 
 1. [Download `update-blocker.php`](https://raw.githubusercontent.com/Rarst/update-blocker/master/update-blocker.php).
-2. Place into `wp-content/mu-plugins/update-blocker`.
+2. Place into `wp-content/mu-plugins`.
 3. Edit settings for blocks in the file.
 
 ### Composer
