@@ -1,4 +1,4 @@
-# Update Blocker — for WordPress repositories
+# Update Blocker — for WP repositories
 
 Update Blocker is a lightweight generic blocker of updates from official WordPress repositories.
 
