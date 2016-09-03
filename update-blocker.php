@@ -35,6 +35,7 @@ $update_blocker = new Plugin( array(
 	'files'   => array( '.git', '.svn', '.hg' ),
 	'plugins' => array( 'update-blocker/update-blocker.php' ),
 	'themes'  => array(),
+	'core'    => false,
 ) );
 
 /**
@@ -55,7 +56,7 @@ class Plugin {
 		register_activation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
 
-		$defaults      = array( 'all' => false ) + array_fill_keys( array( 'files', 'plugins', 'themes' ), array() );
+		$defaults      = array( 'all' => false, 'core' => false ) + array_fill_keys( array( 'files', 'plugins', 'themes' ), array() );
 		$this->blocked = array_merge( $defaults, $blocked );
 
 		add_action( 'init', array( $this, 'init' ) );
@@ -71,6 +72,10 @@ class Plugin {
 			add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
 		} else {
 			add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
+		}
+
+		if ( $this->blocked->all || $this->blocked->core ) {
+			add_filter( 'pre_site_transient_update_core', array( $this, 'return_empty_core_update' ) );
 		}
 	}
 
@@ -239,5 +244,21 @@ class Plugin {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns faked empty results to short circuit core update check.
+	 *
+	 * @return object
+	 */
+	public function return_empty_core_update() {
+
+		global $wp_version;
+
+		return (object) array(
+			'updates'         => array(),
+			'version_checked' => $wp_version,
+			'last_checked'    => time(),
+		);
 	}
 }

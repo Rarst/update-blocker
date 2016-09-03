@@ -1,6 +1,6 @@
 # Update Blocker — for WP repositories
 
-Update Blocker is a lightweight generic blocker of plugin and theme updates from official WordPress repositories.
+Update Blocker is a lightweight generic blocker of plugin, theme, and core updates from official WordPress repositories.
 
 It was created as shared reusable plugin for the sake of no longer reinventing that particular wheel.
 
@@ -68,6 +68,7 @@ array(
 	'files'   => array( '.git', '.svn', '.hg' ),
 	'plugins' => array( 'update-blocker/update-blocker.php' ),
 	'themes'  => array(),
+	'core'    => false,
 )
 ```
 
@@ -75,6 +76,7 @@ array(
  - `files` — array of plugin/theme root–relative files to detect for block
  - `plugins` — array of plugin base names (`folder-name/plugin-name.php`) to block
  - `themes` — array of theme slugs (`theme-name`) to block
+ - `core` — boolean, disables core updates
 
 Settings pass through `update_blocker_blocked` filter.
 
@@ -94,6 +96,15 @@ add_filter( 'update_blocker_blocked', function( $blocked ) {
 ```php
 add_filter( 'update_blocker_blocked', function( $blocked ) {
 	$blocked['themes'][] = 'theme-name';
+	return $blocked;
+} );
+```
+
+### Core opt–in
+
+```php
+add_filter( 'update_blocker_blocked', function ( $blocked ) {
+	$blocked['core'] = true;
 	return $blocked;
 } );
 ```
