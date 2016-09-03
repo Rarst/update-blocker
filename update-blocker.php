@@ -49,7 +49,7 @@ class Plugin {
 	public $api;
 
 	/**
-	 * @param array $blocked
+	 * @param array $blocked Configuration to use.
 	 */
 	public function __construct( $blocked = array() ) {
 		register_activation_hook( __FILE__, array( $this, 'delete_update_transients' ) );
@@ -61,6 +61,9 @@ class Plugin {
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
+	/**
+	 * Init actions.
+	 */
 	public function init() {
 		$this->blocked = (object) apply_filters( 'update_blocker_blocked', $this->blocked );
 
@@ -70,16 +73,25 @@ class Plugin {
 			add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
 		}
 	}
-	
+
+	/**
+	 * Delete update transients for plugins and themes.
+	 *
+	 * Performed on activation/deactivation to reset state.
+	 */
 	public function delete_update_transients() {
 		delete_site_transient( 'update_plugins' );
 		delete_site_transient( 'update_themes' );
 	}
 
 	/**
-	 * @param boolean $false
-	 * @param array   $request_args
-	 * @param string  $url
+	 * Block HTTP requests to plugin/theme API endpoints.
+	 *
+	 * Used for complete updates block.
+	 *
+	 * @param boolean $false        Pass through kill request booleans.
+	 * @param array   $request_args Request arguments.
+	 * @param string  $url          Request URL.
 	 *
 	 * @return boolean|null
 	 */
@@ -90,8 +102,10 @@ class Plugin {
 	}
 
 	/**
-	 * @param array  $request_args
-	 * @param string $url
+	 * Filter blocked plugins and themes out of update request.
+	 *
+	 * @param array  $request_args Request arguments.
+	 * @param string $url          Request URL.
 	 *
 	 * @return array
 	 */
@@ -103,7 +117,7 @@ class Plugin {
 			return $request_args;
 		}
 
-		$data = $this->decode( $request_args['body'][$this->api->type] );
+		$data = $this->decode( $request_args['body'][ $this->api->type ] );
 
 		if ( $this->api->is_plugin ) {
 			$data = $this->filter_plugins( $data );
@@ -113,13 +127,15 @@ class Plugin {
 
 		$data = apply_filters( 'update_blocker_' . $this->api->type, $data );
 
-		$request_args['body'][$this->api->type] = $this->encode( $data );
+		$request_args['body'][ $this->api->type ] = $this->encode( $data );
 
 		return $request_args;
 	}
 
 	/**
-	 * @param string $url
+	 * Determine API context for a given endpoint URL.
+	 *
+	 * @param string $url API URL.
 	 *
 	 * @return object|boolean
 	 */
@@ -140,7 +156,9 @@ class Plugin {
 	}
 
 	/**
-	 * @param string $data
+	 * Decode API request data, conditionally on API version.
+	 *
+	 * @param string $data Serialized data or JSON.
 	 *
 	 * @return array
 	 */
@@ -149,9 +167,11 @@ class Plugin {
 	}
 
 	/**
-	 * @param array $data
+	 * Encode API request data, conditionally on API version.
 	 *
-	 * @return string
+	 * @param array $data Data array to encode.
+	 *
+	 * @return string Serialized or JSON.
 	 */
 	public function encode( $data ) {
 		if ( $this->api->is_serial ) {
@@ -162,7 +182,9 @@ class Plugin {
 	}
 
 	/**
-	 * @param array $data
+	 * Filter disabled plugins out of data set.
+	 *
+	 * @param array $data Data set.
 	 *
 	 * @return array
 	 */
@@ -171,9 +193,9 @@ class Plugin {
 		foreach ( $data['plugins'] as $file => $plugin ) {
 			$path = trailingslashit( WP_PLUGIN_DIR . '/' . dirname( $file ) ); // TODO files without dir?
 
-			if ( in_array( $file, $this->blocked->plugins ) || $this->has_blocked_file( $path ) ) {
-				unset( $data['plugins'][$file] );
-				unset( $data['active'][array_search( $file, $data['active'] )] );
+			if ( in_array( $file, $this->blocked->plugins, true ) || $this->has_blocked_file( $path ) ) {
+				unset( $data['plugins'][ $file ] );
+				unset( $data['active'][ array_search( $file, $data['active'] ) ] );
 			}
 		}
 
@@ -181,7 +203,9 @@ class Plugin {
 	}
 
 	/**
-	 * @param array $data
+	 * Filter disabled themes out of data set.
+	 *
+	 * @param array $data Data set.
 	 *
 	 * @return array
 	 */
@@ -191,8 +215,8 @@ class Plugin {
 
 			$path = trailingslashit( wp_get_theme( $slug )->get_stylesheet_directory() );
 
-			if ( in_array( $slug, $this->blocked->themes ) || $this->has_blocked_file( $path ) ) {
-				unset( $data['themes'][$slug] );
+			if ( in_array( $slug, $this->blocked->themes, true ) || $this->has_blocked_file( $path ) ) {
+				unset( $data['themes'][ $slug ] );
 			}
 		}
 
@@ -200,7 +224,9 @@ class Plugin {
 	}
 
 	/**
-	 * @param string $path
+	 * Determine if path location has any of blocked files from configuration.
+	 *
+	 * @param string $path Filesystem directory path.
 	 *
 	 * @return bool
 	 */
